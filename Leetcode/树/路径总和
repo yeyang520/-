@@ -1,0 +1,31 @@
+/**
+
+找一条路径上的总和等于给定的数
+
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+//回溯问题
+bool tb(struct TreeNode*root,int count){
+    //终止条件
+    if(!root->left&&!root->right&&count==0)return true;
+    else {
+        if(root->left){
+            if(tb(root->left,count-root->left->val))return true;
+        }
+        if(root->right){
+            if(tb(root->right,count-root->right->val))return true;
+        }
+    }
+    return false;
+}
+bool hasPathSum(struct TreeNode* root, int targetSum){
+    if(!root)return false;
+    int count=targetSum;
+    return tb(root,count-root->val);
+}
