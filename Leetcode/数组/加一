@@ -1,0 +1,31 @@
+/*
+    分情况进行讨论
+    1.不用进位
+    2.进位
+    3.进位且需要开辟新空间
+ */
+int* plusOne(int* digits, int digitsSize, int* returnSize){
+    if(digits[digitsSize-1]!=9){//第一种情况
+        digits[digitsSize-1]++;
+        *returnSize=digitsSize;
+        return digits;
+    }
+    else{
+        for(int i=digitsSize-1;i>=0;--i){//从后往前查照
+            if(digits[i]!=9){
+                digits[i]++;
+                *returnSize=digitsSize;
+                return digits;//如果发现不是全部为9就进一位然后返回原数组
+            }
+            else digits[i]=0;
+        }
+        //第三种：开辟新空间，将第一个为1，后面全部为0
+        int *result=(int*)malloc(sizeof(int)*(digitsSize+1));
+        result[0]=1;
+        int cnt=0;
+        *returnSize=digitsSize+1;
+        for(int i=1;i<=digitsSize;++i)result[i]=0;
+        return result;
+    }
+    
+}
