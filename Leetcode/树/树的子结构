@@ -1,0 +1,55 @@
+one
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ /*
+    先对根节点进行判断
+    然后将A的子树与B进行判断
+    判断函数 B空true
+            值不相等false
+            在进行左右子树判断
+ */
+class Solution {
+public:
+    bool isSubStructure(TreeNode* A, TreeNode* B) {
+        return (A!=NULL&&B!=NULL)&&(boolis(A,B)||isSubStructure(A->left,B)||isSubStructure(A->right,B));
+    }
+    bool boolis(struct TreeNode *A,struct TreeNode *B){
+        if(B==NULL)return true;
+        if(A==NULL||A->val!=B->val)return false;
+        return boolis(A->left,B->left)&&boolis(A->right,B->right);
+    }
+};
+
+
+
+two
+
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func isSubStructure(A *TreeNode, B *TreeNode) bool {
+    return (A!=nil && B!=nil)&&(boolis(A,B)||isSubStructure(A.Left,B)||isSubStructure(A.Right,B))
+}
+func boolis (A *TreeNode , B *TreeNode) bool {
+    if B == nil {
+        return true
+    }
+    if A == nil || A.Val!=B.Val {
+        return false
+    }
+    return boolis(A.Left,B.Left) && boolis(A.Right,B.Right)
+}
