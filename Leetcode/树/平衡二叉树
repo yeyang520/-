@@ -1,0 +1,23 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+ //求左右树高度，如果大于 1 就返回 -1
+int dfs(struct TreeNode *root)
+{
+    if(!root)return 0;
+    int l=dfs(root->left);
+    if(l==-1)return -1;
+    int r=dfs(root->right);
+    if(r==-1)return -1;
+    if(abs(l-r)>1)return -1;
+    else return fmax(l,r)+1;
+}
+
+bool isBalanced(struct TreeNode* root){
+    return dfs(root)!=-1;
+}
