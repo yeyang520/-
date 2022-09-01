@@ -1,0 +1,55 @@
+/*
+  给你二叉树的根节点 root ，返回其节点值 自底向上的层序遍历 。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
+
+  对层序遍历数组进行反转
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+ 
+ 
+ //层序遍历加反转
+ #define max 2001
+int** levelOrderBottom(struct TreeNode* root, int* returnSize, int** returnColumnSizes){
+    int **result=(int**)malloc(sizeof(int*)*max);
+    *returnColumnSizes=(int*)malloc(sizeof(int)*max);
+    *returnSize=0;
+    if(!root)return result;
+    struct TreeNode *queue[max];
+    int l=0,r=0;
+    queue[r++]=root;
+    while(l<r){
+        int cnt=0;
+        int temp=r;
+        result[*returnSize]=(int*)malloc(sizeof(int)*max);
+        while(l<temp){
+            if(queue[l]->left)queue[r++]=queue[l]->left;
+            if(queue[l]->right)queue[r++]=queue[l]->right;
+            result[(*returnSize)][cnt++]=queue[l++]->val;
+        }
+        (*returnColumnSizes)[(*returnSize)++]=cnt;
+    }
+    struct TreeNode *a;
+    int b;
+    for(int i=0,j=(*returnSize)-1;i<j;++i,--j){
+        a=result[i];
+        result[i]=result[j];
+        result[j]=a;
+        b=(*returnColumnSizes)[i];
+        (*returnColumnSizes)[i]=(*returnColumnSizes)[j];
+        (*returnColumnSizes)[j]=b;
+    }
+    return result;
+}
