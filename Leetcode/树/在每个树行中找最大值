@@ -1,0 +1,33 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* largestValues(struct TreeNode* root, int* returnSize){
+    int *result=(int*)malloc(sizeof(int)*10000);
+    *returnSize=0;
+    if(!root)return result;
+    struct TreeNode*q[10000];
+    int l=0,r=0;
+    q[r++]=root;
+    while(l<r){
+        int temp=r;
+        int max=q[l]->val;
+        while(l<temp){
+            if(q[l]->val>max)max=q[l]->val;
+            if(q[l]->left)q[r++]=q[l]->left;
+            if(q[l]->right)q[r++]=q[l]->right;
+            l++;
+        }
+        result[(*returnSize)++]=max;
+    }
+    return result;
+}
