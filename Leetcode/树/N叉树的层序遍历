@@ -1,0 +1,41 @@
+/**
+ * Definition for a Node.
+ * struct Node {
+ *     int val;
+ *     int numChildren;
+ *     struct Node** children;
+ * };
+ */
+
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+ 
+int** levelOrder(struct Node* root, int* returnSize, int** returnColumnSizes) {
+    *returnSize=0;
+    *returnColumnSizes=(int**)malloc(sizeof(int*)*1000);
+    int **result=(int**)malloc(sizeof(int*)*1000);
+    if(!root)return result;
+    
+    struct Node*q[10000];
+    int l=0,r=0;
+    q[r++]=root;
+    while(l<r){
+        int temp=r;
+        int ColSize=0;//记录每层由多少数
+        result[*returnSize]=(int*)malloc(sizeof(int)*(r-l+1));
+
+        while(l<temp){ 
+            result[(*returnSize)][ColSize++]=q[l]->val;//记录当前数的值
+            if(q[l]->numChildren){   
+                for(int i=0;i<q[l]->numChildren;++i)q[r++]=q[l]->children[i];
+            }
+            l++;
+        }
+
+        (*returnColumnSizes)[(*returnSize)++]=ColSize;
+    }
+    return result;
+}
