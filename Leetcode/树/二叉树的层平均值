@@ -1,0 +1,38 @@
+/*
+给定一个非空二叉树的根节点 root , 以数组的形式返回每一层节点的平均值。与实际答案相差 10-5 以内的答案可以被接受。
+*/
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+double* averageOfLevels(struct TreeNode* root, int* returnSize){
+    struct TreeNode*q[10000];
+    *returnSize=0;
+    double *result=(double*)malloc(sizeof(double)*1001);
+    int l=0,r=0;
+    q[r++]=root;
+    while(l<r){
+        double sum=0;
+        int cnt=0;
+        int temp=r;
+        while(l<temp){
+            sum+=q[l]->val;
+            cnt++;
+            if(q[l]->left)q[r++]=q[l]->left;
+            if(q[l]->right)q[r++]=q[l]->right;
+            l++;
+        }
+        result[(*returnSize)++]=sum/cnt;
+    }
+    return result;
+}
