@@ -1,0 +1,29 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+/*
+    递归切割中序数组和后序数组
+    难点在于如何切割，边界问题
+*/
+struct TreeNode* buildTree(int* inorder, int inorderSize, int* postorder, int postorderSize){
+    //如果根节点为空或者为叶子节点
+    if(inorder==0||postorderSize==0)return NULL;
+    //后序遍历最后一个为亲节点
+    struct TreeNode *root=(struct TreeNode*)malloc(sizeof(struct TreeNode));
+    root->val=postorder[postorderSize-1];
+    //从前序遍历中找到亲节点的值，进行分割
+    int left;
+    for(left=0;left<inorderSize;++left)if(inorder[left]==root->val)break;
+    
+    int right=postorderSize-left-1;//右子树的节点个数，left为左子树的节点个数
+
+    root->left=buildTree(inorder,left,postorder,left);
+    root->right=buildTree(inorder+left+1,right,postorder+left,right);
+    return root;
+}
