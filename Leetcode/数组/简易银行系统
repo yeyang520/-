@@ -1,0 +1,51 @@
+/*
+    银行系统   数组 顺序表
+*/
+typedef struct  bank{
+    long long  * accoun;
+    int max;
+} Bank;
+
+
+Bank* bankCreate(long long* balance, int balanceSize) {
+    Bank *bal=(Bank*)malloc(sizeof(struct bank));
+    bal->accoun=(long long*)malloc(sizeof(long long)*balanceSize);
+    bal->max=balanceSize;
+    for(int i=0;i<balanceSize;++i)bal->accoun[i]=balance[i];
+    return bal;
+}
+//转账
+bool bankTransfer(Bank* obj, int account1, int account2, long long money) {
+    if(account1>obj->max||account2>obj->max||obj->accoun[account1-1]<money)return false;
+    obj->accoun[account1-1]-=money;
+    obj->accoun[account2-1]+=money;
+    return true;
+}
+//存钱  
+bool bankDeposit(Bank* obj, int account, long long money) {
+    if(account>obj->max||account<0)return false;
+    obj->accoun[account-1]+=money;
+    return true;
+}
+//取钱
+bool bankWithdraw(Bank* obj, int account, long long money) {
+    if(account>obj->max||obj->accoun[account-1]<money)return false;
+    obj->accoun[account-1]-=money;
+    return true;
+}
+
+void bankFree(Bank* obj) {
+    free(obj->accoun);
+}
+
+/**
+ * Your Bank struct will be instantiated and called as such:
+ * Bank* obj = bankCreate(balance, balanceSize);
+ * bool param_1 = bankTransfer(obj, account1, account2, money);
+ 
+ * bool param_2 = bankDeposit(obj, account, money);
+ 
+ * bool param_3 = bankWithdraw(obj, account, money);
+ 
+ * bankFree(obj);
+*/
