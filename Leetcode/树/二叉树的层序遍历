@@ -1,0 +1,38 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+int** levelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes){
+    *returnColumnSizes=(int*)malloc(sizeof(int)*2000);
+    int **result=(int**)malloc(sizeof(int*)*2000);
+    *returnSize=0;
+    if(!root)return result;
+    //开辟指针结构体数组
+    struct TreeNode *queue[2000];
+    //先将根节点放入队列
+    int l=0,r=0;
+    queue[r++]=root;
+    while(l<r){
+        int cnt=0;//记录每层的数
+        int temp=r;//记录当前层数由多少个数
+        result[*returnSize]=(int*)malloc(sizeof(int)*1000);
+        while(l<temp){
+            if(queue[l]->left)queue[r++]=queue[l]->left;
+            if(queue[l]->right)queue[r++]=queue[l]->right;
+            result[*returnSize][cnt++]=queue[l++]->val;
+        }
+        (*returnColumnSizes)[(*returnSize)++]=cnt;
+    }
+    return result;
+}
