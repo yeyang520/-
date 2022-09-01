@@ -1,0 +1,29 @@
+/**
+
+  层序遍历，每次都记录第一个值即为最左边的值
+  
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+//层序遍历
+int findBottomLeftValue(struct TreeNode* root){
+    struct TreeNode*q[10001];
+    int l=0,r=0;
+    q[r++]=root;
+    int ans=0;
+    while(l<r){
+        int temp=r;
+        ans=q[l]->val;
+        while(l<temp){
+            if(q[l]->left)q[r++]=q[l]->left;
+            if(q[l]->right)q[r++]=q[l]->right;
+            l++;
+        }
+    }
+    return ans;
+}
