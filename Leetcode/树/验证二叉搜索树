@@ -1,0 +1,23 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+void traver(struct TreeNode*root,int *a,int *i){
+    if(root){
+        traver(root->left,a,i);//此时 i 已经是指针，传入的时候直接传 i 就好
+        a[(*i)++]=root->val;
+        traver(root->right,a,i);
+    }
+}
+bool isValidBST(struct TreeNode* root){
+    int a[10001];
+    int i=0;
+    traver(root,a,&i);
+    //for(int j=0;j<i;++j)printf("%d ",a[j]);
+    for(int j=0;j<i-1;++j)if(a[j]>=a[j+1])return false;
+    return true;
+}
