@@ -1,0 +1,42 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+private:
+    int sum;
+public:
+    /**
+        对于任意一个节点, 如果最大和路径包含该节点, 那么只可能是两种情况:
+        1. 其左右子树中所构成的和路径值较大的那个加上该节点的值后向父节点回溯构成最大路径
+        2. 左右子树都在最大路径中, 加上该节点的值构成了最终的最大路径
+    **/
+    int back(TreeNode *root)
+    {
+        if(!root)return 0;
+        //如果子树结点是负的，加上一定会更小，直接舍去
+        int left=max(back(root->left),0);
+        int right=max(back(root->right),0);
+        sum = max(left+right+root->val,sum);//判断该节点包含左右路径是否大于当前最大路径
+        return max(left,right)+root->val;
+    }
+    int maxPathSum(TreeNode* root) {
+        sum=root->val;
+        back(root);
+        return sum;
+    }
+};
+
+
+
+/*
+  明明自己有想法，却写不出来，，，，
+
+*/
