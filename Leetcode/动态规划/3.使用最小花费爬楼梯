@@ -1,0 +1,28 @@
+/*
+1.确定dp数组及下标含义
+    dp[i]代表爬到该层需要支付的最小费用
+2.递推公式
+    dp[i] = min(dp[i-1],dp[i-1])+cost[i]
+3.初始化
+    dp[0]=cost[0] , dp[1] = cost[1]
+4.遍历顺序
+    正序
+5.举例推导
+
+
+tip : 最后一步默认不花费，别忘了
+*/
+
+
+class Solution {
+public:
+    int minCostClimbingStairs(vector<int>& cost) {
+        vector<int> dp(cost.size());
+        dp[0]=cost[0],dp[1]=cost[1];
+        for(int i=2;i<cost.size();++i)
+        {
+            dp[i]=min(dp[i-1],dp[i-2])+cost[i];
+        }
+        return min(dp[cost.size()-1],dp[cost.size()-2]);
+    }
+};
