@@ -1,0 +1,28 @@
+
+/*
+    转换成01背包问题，即求本题能否出现sum/2的子集
+    当背包容量为num/2时，看子集的最大和
+
+    dp数组代表容量为sum时的最大序列和
+    递推公式 dp[i] = maxdp[i],dp[i-nums[i]] + nums[i];
+*/
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        int sum=0;
+        for(int x:nums)sum+=x;
+        if(sum%2!=0)return false;
+        int target = sum/2;
+        vector<int>dp(20001,0);
+
+        for(int i=0;i<nums.size();++i)
+        {
+            for(int j=target;j>=nums[i];--j)//每一个元素不能重复放入，从后往前遍历
+            {
+                dp[j] = max(dp[j],dp[j-nums[i]]+nums[i]);
+            }
+        }
+        if(dp[target]==target)return true;
+        else return false;
+    }
+};
