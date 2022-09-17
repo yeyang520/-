@@ -1,0 +1,29 @@
+/*
+    dp[i][j]代表 i 个零和 j 个 1 的最大子集
+    递推公式
+    dp[i][j] = max(dp[i][j],dp[i-zeroNum][j-oneNum]+ 1)
+*/
+class Solution {
+public:
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        vector<vector<int> >dp(m+1,vector<int>(n+1,0));
+        for(string str:strs)
+        {
+            int zeroNum=0,oneNum=0;
+            for(char s : str)
+            {
+                if(s=='0')zeroNum++;
+                else oneNum++;
+            }
+            //遍历背包跟物品,从后往前
+            for(int i=m;i>=zeroNum;--i)//先遍历零
+            {
+                for(int j=n;j>=oneNum;--j)//遍历1
+                {
+                    dp[i][j] = max(dp[i][j],dp[i-zeroNum][j-oneNum]+1);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+};
