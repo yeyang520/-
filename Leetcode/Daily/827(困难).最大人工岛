@@ -1,0 +1,84 @@
+/*
+    思路：
+    1.首先遍历地图，得到所有岛屿的面积，并且做编号记录，用map
+    2.然后遍历零的位置，计算周边岛屿面积(将周边岛屿面积相加)
+    3.遍历完所有零之后，找到最大面积
+*/
+class Solution {
+private:
+    int count=0;//记录岛屿面积
+    int dir[4][2] = {0,1,1,0,-1,0,0,-1};
+    void dfs(vector<vector<bool> >&visited,vector<vector<int>>& grid,int x,int y,int mark)
+    {
+        
+        if(visited[x][y]||grid[x][y]==0)return ;//如果遇到海水或者访问过的节点返回
+        visited[x][y] = true;//标记该地点访问过
+        grid[x][y] = mark;//给陆地标记新标签
+        count++; //该岛屿面积加1
+        //往四个方向扩展
+        for(int i=0;i<4;++i)
+        {
+            int nextx = x + dir[i][0];
+            int nexty = y + dir[i][1];
+            
+            if(nextx<0||nextx>=grid.size()||nexty<0||nexty>=grid[0].size())continue;//如果越界跳过
+            
+            dfs(visited,grid,nextx,nexty,mark);//扩展,深搜
+        }
+    }
+public:
+    int largestIsland(vector<vector<int>>& grid) {
+        
+        int n = grid.size(),m = grid[0].size();//记录遍历过地图,即访问过的节点
+        vector<vector<bool> >visited = vector<vector<bool>>(n,vector<bool>(m,false));
+        
+        unordered_map<int,int>gridNum;//map记录访问过的岛屿的面积
+        
+        bool isAllGrid = true;//如果地图全部为陆地，可以直接返回
+        //岛屿编号
+        int mark=2; //2!=0 2!=1  ,方便更改地图,记录每个岛屿的编号
+        
+        for(int i=0;i<n;++i)//遍历地图
+        {
+            for(int j=0;j<m;++j)
+            {
+                if(grid[i][j]==0)isAllGrid = false;
+                if(!visited[i][j]&&grid[i][j]==1)//在地图上找到未访问的岛屿
+                {
+                    count=0;
+                    dfs(visited,grid,i,j,mark);
+                    gridNum[mark] = count;//记录岛屿面积
+                    mark++;//下一个岛屿
+                }
+            }
+        }
+        
+        if(isAllGrid==true)return n*m;//如果全部是陆地，直接返回
+        
+        int result=0;//开始找
+        unordered_set<int>visitedGrid;
+        for(int i=0;i<n;++i)
+        {
+            for(int j=0;j<m;++j)
+            {
+                int count = 1;//相当于将 0 变为 1
+                visitedGrid.clear();//使用前清空
+                if(grid[i][j]==0)
+                { 
+                    for(int k=0;k<4;++k)//计算相邻坐标的位置
+                    {
+                        int neari = i + dir[k][1];
+                        int nearj = j + dir[k][0];
+                        if(neari<0||neari>=grid.size()||nearj<0||nearj>=grid[0].size())continue;//越界
+                        if(visitedGrid.count(grid[neari][nearj]))continue;//确保找到的岛屿不重复
+                        //将四面的岛相加
+                        count += gridNum[grid[neari][nearj]];
+                        visitedGrid.insert(grid[neari][nearj]);
+                    } 
+                }
+                result = max(result,count);
+            }
+        }
+        return result;
+    }
+};
