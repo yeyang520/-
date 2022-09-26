@@ -1,0 +1,27 @@
+//暴力
+class Solution {
+public:
+    vector<int> missingTwo(vector<int>& nums) {
+        //排序
+        sort(nums.begin(),nums.end());  
+        vector<int>result;
+        int count=1,i=0;
+        while(i<nums.size())
+        {
+            if(nums[i]!=count)
+            {
+                result.push_back(count++);
+            }
+            else {
+                count++;
+                i++;
+            }
+        }
+        //如果不足两个就额外添加
+        for(int i=result.size();i<2;++i)
+        {
+            result.push_back(count++);
+        }
+        return result;
+    }
+};
