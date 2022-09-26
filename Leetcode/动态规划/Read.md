@@ -14,3 +14,6 @@
 dp[i] = max(dp[i] , dp[j - weight[i] + value[i])
 
 dp[j] += dp[j - coins[i]]
+
+排列：先遍历背包容量，再遍历物品
+组合：先遍历物品，再遍历背包容量
