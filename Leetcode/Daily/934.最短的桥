@@ -1,0 +1,88 @@
+class Solution {
+private:
+    vector<vector<int> > tgrid;
+public:
+    void backtrack(queue<pair<int,int> > &que,vector<vector<int>>&tgrid,int x,int y)
+    {
+        if(x<0||y>=tgrid[0].size()||y<0||x>=tgrid.size()||tgrid[x][y]!=1)
+        return ;
+
+        pair<int,int> t;
+        t.first = x;
+        t.second = y;
+        que.push(t);
+        tgrid[x][y] = 2;
+        backtrack(que,tgrid,x-1,y);
+        backtrack(que,tgrid,x+1,y);
+        backtrack(que,tgrid,x,y-1);
+        backtrack(que,tgrid,x,y+1);
+    }
+
+    bool isLegal(vector<vector<int>>&tgrid,int x,int y)
+    {
+        if(x<0||y>=tgrid[0].size()||y<0||x>=tgrid.size())
+        return false;
+        else return true;
+    }
+    int p(queue<pair<int,int> > &que,vector<vector<int>>&tgrid,int x,int y)
+    {
+        if(isLegal(tgrid,x,y)&&tgrid[x][y]!=2)
+        {
+            pair<int,int>t(x,y);
+            if(tgrid[x][y]==1)
+            {
+                // cout<<x<<y;
+                return 1;
+            }
+            tgrid[x][y] = 2;
+            que.push(t);
+        }
+        return 0;
+    }
+
+
+
+    //深搜先找到第一座岛的位置，放入队列，然后广搜，找到另一座岛，直接返回
+    int shortestBridge(vector<vector<int>>& grid) {
+        tgrid = grid;
+        queue<pair<int,int> > que;
+        for(int i=0;i<grid.size();++i)
+        {
+            int falg = 0;
+            for(int j=0;j<grid[i].size();++j)
+            {
+                if(grid[i][j]==1)
+                {
+                    falg = 1;
+                    backtrack(que,tgrid,i,j);
+                    break;
+                }
+            }
+            if(falg == 1)break;
+        }
+        int temp=0;
+        // cout<<que.size();
+        while(1)
+        {
+            
+            
+            // cout<<que.size()<<" ";
+            int n = que.size();
+            for(int i=0;i<n;++i)
+            {
+                pair<int,int> t =  que.front();
+                // cout<<t.first<<t.second<<" ";
+                que.pop();
+                if(p(que,tgrid,t.first-1,t.second)==1)return temp;
+                if(p(que,tgrid,t.first+1,t.second)==1)return temp;
+                if(p(que,tgrid,t.first,t.second-1)==1)return temp;
+                if(p(que,tgrid,t.first,t.second+1)==1)return temp;
+            }
+
+            temp++;
+
+
+        }
+        return 0;
+    }
+};
