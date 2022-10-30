@@ -1,0 +1,23 @@
+class Solution {
+    private:
+    vector<string>result;
+public:
+
+    void backtrack(vector<string>&result,string &s,int start)
+    {
+        result.push_back(s);
+        for(int i = start;i<s.size();++i)
+        {
+            //如果是数字直接跳过
+            if(s[i]<'A')continue;
+            s[i]^=32;//将小写转化为大写或大写转化为小写
+            backtrack(result,s,i+1);
+            s[i]^=32;//在换回去
+        }
+    }
+
+    vector<string> letterCasePermutation(string s) {
+        backtrack(result,s,0);
+        return result;
+    }
+};
