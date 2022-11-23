@@ -1,0 +1,29 @@
+class Solution {
+public:
+//nums的总和是不变的，left + right = nums
+//                   left组合 - right组合 = target
+//                   left = (nums + target)/2
+//                   即求和为left的组合
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int sum  =0 ;
+        for(int x:nums)sum+=x;
+        //如果目标数大于总和或者两个相加是奇数，无解
+        if(target>sum||(sum+target)%2==1)return 0;
+        int bagSize = (sum+target)/2;
+        if(bagSize < 0)return 0 ;
+        int dp[bagSize+1];
+        for(int i=1;i<=bagSize;++i)dp[i]  =0;
+        //0初始化为1，当容量为零时，直接装满，算一种
+        dp[0] = 1;
+        //物品
+        for(int i=0;i<nums.size();++i)
+        {
+            //背包
+            for(int  j = bagSize;j>=nums[i];--j)
+            {
+                dp[j]+=dp[j - nums[i]];
+            }
+        }
+        return dp[bagSize];
+    }
+};
